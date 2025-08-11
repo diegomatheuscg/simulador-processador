@@ -5,15 +5,15 @@
 #include "lib.h" 
 #include <iostream>
 
-constexpr uint16_t mem_size = 1024 * 32;
-
+constexpr uint16_t MEM_SIZE = 1024 * 32;
+constexpr uint16_t REG_SIZE = 8;
 
 struct Mem {
-    uint16_t memory[mem_size] = {0};
+    uint16_t memory[MEM_SIZE];
 };
 
 struct CPU {
-    uint16_t registrador[8] = {0};
+    uint16_t registrador[REG_SIZE];
     uint16_t PC = 1;
 };
 
@@ -71,8 +71,8 @@ void decodificarInstrucao(uint16_t instrucao, Instr *instr){
 }
 
 void executarInstrucao(CPU *cpu, Mem *mem, Instr *instr) {
-
     bool pc_modificado = false; //pra controlar caso seja um jump, pq o jump modifica o pc p/ valor imediato
+    
     switch (instr->tipo) {
         case 0: { // Tipo R
 
@@ -116,7 +116,7 @@ void executarInstrucao(CPU *cpu, Mem *mem, Instr *instr) {
             switch (instr->opcode) {
                 case 0b00: // JUMP
                     cpu->PC = instr->imediato;
-                pc_modificado = true;//como o jump altera o pc pra valor imediato, iso aqui avisa lá em baixo que não é pra incrementar (baseado na condição!)
+                    pc_modificado = true;//como o jump altera o pc pra valor imediato, iso aqui avisa lá em baixo que não é pra incrementar (baseado na condição!)
                     break;
                 case 0b01: // JUMP_COND
                     if (cpu->registrador[instr->reg] != 0) {
@@ -151,7 +151,7 @@ int main (int argc, char **argv) {
     CPU cpu;
     Instr instr;
 
-    load_binary_to_memory(argv[1], mem.memory, mem_size);
+    load_binary_to_memory(argv[1], mem.memory, MEM_SIZE);
 
     while(1) {
         //fetch
