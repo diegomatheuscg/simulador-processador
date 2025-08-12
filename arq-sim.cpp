@@ -31,7 +31,7 @@ void executarSyscall(CPU *cpu, Mem *mem) {
     switch (cpu->registrador[0]) {
         case 0: 
             printf("\nPrograma finalizado\n");
-            for(int i = 0; i < 8; i++) {
+            for(int i = 0; i < REG_SIZE; i++) {
                 printf("R%d: %u\n", i, cpu->registrador[i]);
             }
             exit(0);
@@ -128,7 +128,7 @@ void executarInstrucao(CPU *cpu, Mem *mem, Instr *instr) {
                     cpu->registrador[instr->reg] = instr->imediato;
                     break;
                 default:
-                    printf("Opcode Tipo I desconhecido: %u\n", instr->opcode);
+                    printf("Opcode do tipo I desconhecido: %u\n", instr->opcode);
                     break;
             }
             break;
